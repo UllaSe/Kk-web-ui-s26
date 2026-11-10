@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Parallax</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: black;
+        font-family: "Open Sans", sans-serif;
+        font-weight: 200;
+      }
+      header {
+        height: 100px;
+        background-color: black;
+        color: rgb(220, 220, 220);
+        text-align: center;
+        padding: 20px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 10;
+      }
+
+      main,
+      section {
+        color: white;
+        padding: 40px;
+        z-index: 5;
+        position: relative;
+        background-color: #130d0a;
+        margin-top: -5px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 2em;
+      }
+
+      nav {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: linear-gradient(
+          136deg,
+          rgba(0, 0, 0, 1) 0%,
+          rgba(253, 45, 45, 1) 100%
+        );
+        padding-top: 100px;
+        list-style-type: none;
+        transform: translateX(100%);
+        transition: all 0.5s;
+        z-index: 10;
+      }
+      .nav-active {
+        transform: translateX(0);
+      }
+
+      nav ul {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 15px 0;
+        list-style-type: none;
+      }
+      nav li {
+        color: white;
+        padding: 15px 0;
+      }
+
+      nav a {
+        display: block;
+        color: white;
+        transform: scale(1);
+        text-decoration: none;
+        transition:
+          color 1s,
+          transform 1s;
+
+        /* transition: all 1s ease-in 1s; */
+      }
+      nav a:hover {
+        color: #ce4c0b;
+        transform: scale(1.2);
+      }
+      #hamburger {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        position: absolute;
+        top: 28px;
+        right: 28px;
+        z-index: 30;
+      }
+      #hamburger div {
+        width: 22px;
+        height: 2px;
+        background-color: rgb(255, 255, 255);
+        margin: 4px 0;
+        transition: 1s;
+      }
+
+      /* Kun annetaan jokaiselle viivalle active luokka
+      triggeröi se kaikki kolme animoitumaan kerralla */
+
+      .hamburger-active #bar1 {
+        transform: rotate(-45deg) translate(-5px, 10px);
+      }
+      .hamburger-active #bar2 {
+        opacity: 0;
+      }
+      .hamburger-active #bar3 {
+        transform: rotate(45deg) translate(-3px, -8px);
+      }
+
+      #scroll-parallax {
+        height: 800px;
+        overflow: hidden;
+        position: relative;
+        background-color: #ce4c0b;
+      }
+      #fixed-parallax {
+        height: 300px;
+        overflow: hidden;
+        position: relative;
+        background-color: #446d65;
+        background-image: url(img/mountain.webp);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-attachment: fixed;
+      }
+      .layer {
+        /* luvat on fiksattu selaimeen */
+        width: 100%;
+        height: 800px;
+        position: fixed;
+        background-size: auto;
+        background-repeat: no-repeat;
+        background-position: bottom center;
+      }
+
+      .layer1 {
+        background-image: url("img/ilu_01.jpg");
+      }
+      .layer2 {
+        background-image: url("img/ilu_02.png");
+      }
+      .layer3 {
+        background-image: url("img/ilu_03.png");
+      }
+      .layer4 {
+        background-image: url("img/ilu_04.png");
+      }
+      .layer5 {
+        background-image: url("img/ilu_05.png");
+      }
+      .layer6 {
+        background-image: url("img/ilu_06.png");
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Parallax demo page</h1>
+      <!--  This is the button to toggele the menu on mobile devices  -->
+      <div id="hamburger">
+        <div id="bar1"></div>
+        <div id="bar2"></div>
+        <div id="bar3"></div>
+      </div>
+
+      <!-- This is the list of menu items   -->
+      <nav>
+        <ul>
+          <li><a href="#">Scroll Parallax</a></li>
+          <li><a href="#">Mousemove</a></li>
+          <li><a href="#">Duckhunt</a></li>
+          <li><a href="#">CSS 3D - Webgl</a></li>
+        </ul>
+      </nav>
+    </header>
+    <div id="scroll-parallax">
+      <div class="layer layer1" data-type="parallax" data-speed="5"></div>
+      <div class="layer layer2" data-type="parallax" data-speed="20"></div>
+      <div class="layer layer3" data-type="parallax" data-speed="40"></div>
+      <div class="layer layer4" data-type="parallax" data-speed="60"></div>
+      <div class="layer layer5" data-type="parallax" data-speed="80"></div>
+      <div class="layer layer6" data-type="parallax" data-speed="100"></div>
+    </div>
+
+    <main>
+      <h1>My page</h1>
+      <div>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod, iste?
+        Accusantium expedita doloribus perferendis vel possimus quo magnam odio
+        dignissimos nemo sint ipsam, eius odit laborum commodi corrupti cum
+        aliquid. Dolorem sequi facilis libero minus ipsam non, soluta iste
+        molestiae quidem quam vero ad animi, excepturi omnis repudiandae
+        quibusdam porro commodi dolores consequatur odit fugiat explicabo amet?
+        Eligendi, dolores itaque. Minus possimus esse similique error repellat
+        magnam dolorem iste omnis amet eius. Praesentium, pariatur dolorum
+        obcaecati, recusandae, ducimus vitae voluptas voluptatum vero cum
+        doloremque quisquam adipisci minus officia harum odio? Id impedit
+        aspernatur itaque numquam reprehenderit a ratione? Odit corporis, ullam
+        nesciunt quam aspernatur temporibus. Recusandae laborum, unde tempore,
+        voluptas asperiores, et obcaecati officia veniam praesentium quae
+        debitis! Dolores, illo. Qui reprehenderit velit iste laborum, optio
+        reiciendis pariatur dolorum culpa? Doloremque provident quo nulla sunt a
+        corrupti, fugit, iste facilis iure, voluptatum ipsam. Omnis odio
+        repellat at tenetur est voluptas! Repellat, cum earum? Placeat facere
+        iure modi dolor libero rerum animi, hic reprehenderit dolore inventore
+        voluptas nam cum consequuntur ullam, consectetur harum veniam dolorum
+        nulla magnam sapiente, quos quisquam voluptatem. Cum totam praesentium
+        minima, quaerat nam perspiciatis fuga, nostrum quo magni tenetur
+        repellendus debitis reiciendis quae. Unde voluptatum saepe aperiam
+        laborum similique architecto tempore debitis iste delectus ducimus,
+        deleniti dolorum!
+      </div>
+    </main>
+    <div id="fixed-parallax"></div>
+    <section>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, corporis,
+      neque et id obcaecati ullam eaque odio blanditiis perspiciatis nostrum hic
+      a labore eius doloremque distinctio error saepe sapiente. Ipsum? Veritatis
+      eveniet magnam omnis eaque consectetur molestias nesciunt expedita quas
+      vel maiores officia alias reprehenderit aliquid, excepturi facilis fugit
+      repellat? Quas porro magnam necessitatibus ex ea. Voluptates corporis est
+      atque. Voluptatem nobis, obcaecati illum nulla culpa quos deleniti
+      consequuntur recusandae asperiores aperiam officiis quasi, alias adipisci
+      laboriosam! Corrupti iusto ea voluptatum vitae eos, culpa modi, vero
+      molestias, nesciunt natus provident. Recusandae eum, accusantium quidem
+      quos sequi unde, tempora eius sapiente veniam autem cupiditate harum
+      dignissimos consectetur officiis earum at ipsam deleniti? Labore,
+      praesentium nostrum? Sunt illo molestiae omnis facilis debitis?
+    </section>
+    <script>
+      const hamburger = document.querySelector("#hamburger");
+      const nav = document.querySelector("nav");
+      let layers = document.querySelectorAll("[data-type='parallax']");
+
+      hamburger.addEventListener("click", () => {
+        console.log("Klikki rekisteröidään");
+        nav.classList.toggle("nav-active");
+        hamburger.classList.toggle("hamburger-active");
+      });
+
+      window.addEventListener("scroll", (event) => {
+        let top = this.pageYOffset;
+        console.log(top);
+
+        let layer, speed, yPos;
+
+        for (let i = 0; i < layers.length; i++) {
+          layer = layers[i];
+          speed = layer.getAttribute("data-speed");
+          yPos = -((top * speed) / 100);
+          layer.setAttribute(
+            "style",
+            "transform: translate3d(0px, " + yPos + "px, 0px)",
+          );
+        }
+      });
+    </script>
+  </body>
+</html>
