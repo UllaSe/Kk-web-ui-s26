@@ -1,3 +1,3 @@
 # Käyttäjäkeskeinen suunnittelu
 
-Tältä löydät kurssilla käytyjä koodiesimerkkejä
+Täältä löydät kurssilla käytyjä koodiesimerkkejä
