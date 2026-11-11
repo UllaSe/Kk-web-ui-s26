@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Duck Hunt – CSS animations</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* 1. Sivun perusmuotoilu */
+      body {
+        min-height: 100vh;
+        font-family: "Press Start 2P", cursive;
+        line-height: 1.7;
+      }
+
+      main {
+        width: 800px;
+        margin: 0 auto;
+      }
+
+      .dh {
+        width: 200px;
+        padding: 10px;
+        float: left;
+      }
+
+      /* 2. Pelialue: absolute-elementit sijoitetaan tämän sisään */
+      .stage {
+        position: relative;
+        width: 800px;
+        height: 481px;
+        background: url("img/stage.png") center / contain no-repeat;
+        overflow: hidden; /* Karkaava ankka ei näy alueen ulkopuolella */
+        cursor: crosshair;
+      }
+
+      #output {
+        margin-top: 40px;
+        padding-left: 30px;
+        font-family: monospace;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .dog {
+      }
+      .duck {
+      }
+
+      /* Tätä luokkaa voi testata selaimen konsolista. */
+      .paused {
+        animation-play-state: paused;
+      }
+
+      /* Koiran animaatiot */
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <h1>Duckhunt Stage</h1>
+
+      <p>
+        <img class="dh" src="img/duckhunt.png" alt="" />
+        Duck Hunt is a fantastic arcade game that takes inspiration from the
+        original classic available on Nintendo game systems. You must shoot the
+        moving ducks down with your mouse and see how many points you can score.
+        Be sure to avoid shooting your faithful dog!
+      </p>
+
+      <div class="stage">
+        <div class="dog"></div>
+        <div class="duck1"></div>
+      </div>
+
+      <h2>Animation events</h2>
+      <ul id="output"></ul>
+    </main>
+
+    <script>
+      const dog = document.querySelector(".dog");
+      const duck = document.querySelector(".duck1");
+      const stage = document.querySelector(".stage");
+      const output = document.querySelector("#output");
+
+      // 1. Apufunktio: lisätään viesti tapahtumalokiin.
+      function addLog(message) {
+        const li = document.createElement("li");
+        li.textContent = message;
+        output.prepend(li);
+      }
+
+      // 2. Seurataan koiran animaatioiden alkua, toistoja ja loppua.
+      const animationEvents = [
+        "animationstart",
+        "animationiteration",
+        "animationend",
+      ];
+
+      animationEvents.forEach((eventType) => {
+        dog.addEventListener(eventType, (event) => {
+          addLog(
+            `${event.animationName}: ${event.type} ` +
+              `(${event.elapsedTime.toFixed(1)} s)`,
+          );
+
+          // HUOM: animationend laukeaa jokaisesta päättyvästä animaatiosta.
+          // Käynnistetään ankka vasta koko hyppysarjan päätyttyä.
+        });
+      });
+
+      // Osuma: jäädytetään ankan tämänhetkinen sijainti ennen
+      // lentämisluokan poistamista ja putoamisanimaation aloittamista.
+      // duck.addEventListener("click", () => {});
+
+      //  Jos lentoreitti päättyy, ankka on karannut.
+      // duck.addEventListener("animationend", (event) => {});
+
+      // Testaa konsolissa:
+      // duck.classList.add('paused');    // keskeytä
+      // duck.classList.remove('paused'); // jatka
+    </script>
+  </body>
+</html>
