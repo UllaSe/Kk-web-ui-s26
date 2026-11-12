@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="fi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS 3D ja Three.js - demo</title>
+
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 24px;
+        line-height: 1.5;
+      }
+
+      h2,
+      h3 {
+        margin-top: 44px;
+      }
+      /* ========================================================
+         DEMO 1: YKSI 3D-TASO
+         ======================================================== */
+      .scene {
+        width: 200px;
+        height: 200px;
+        border: 1px solid black;
+        margin: 50px auto;
+      }
+
+      .face {
+        width: 100%;
+        height: 100%;
+        background-color: blueviolet;
+        /* tänne rotaatiot ym transitiot */
+      }
+
+      .flex {
+        /* tyylittele flexbox kortit jossa keskitetty teksti */
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>CSS 3D ja Three.js</h1>
+    <p>
+      2D-transformeista 3D-perspektiiviin, transitioneihin ja
+      animaatiosilmukkaan.
+    </p>
+
+    <h2>1. CSS 3D Intro</h2>
+    <p>Yksi taso, jota käännetään Y-akselin ympäri.</p>
+
+    <div class="scene">
+      <div class="face flex">Etuosa</div>
+    </div>
+
+    <h2>2. CSS-kortti: transition + JavaScript</h2>
+    <p>
+      Kokeile kääntää kortti klikkaamalla. Kortti on myös näppäimistöllä
+      käytettävä.
+    </p>
+
+    <style>
+      /* ========================================================
+         DEMO 2: KÄÄNTYVÄ KORTTI
+         JavaScript vaihtaa tilan, CSS animoi muutoksen.
+         ======================================================== */
+      .card {
+        display: block;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        border: 0;
+        padding: 0;
+        background: transparent;
+        color: inherit;
+        cursor: pointer;
+        font: inherit;
+      }
+
+      .card:focus-visible {
+        outline: 3px solid darkorange;
+        outline-offset: 5px;
+      }
+
+      /* Luokka lisätään ja poistetaan JavaScriptillä. */
+      .flipped {
+      }
+      .card:hover {
+      }
+      .card-front,
+      .card-back {
+      }
+
+      .card-front {
+      }
+
+      .card-back {
+      }
+    </style>
+
+    <!-- .scene määrittää perspektiivin. -->
+    <div class="scene">
+      <!-- .card kokoaa kaksi tasoa yhdeksi käännettäväksi elementiksi. -->
+      <button
+        class="card"
+        type="button"
+        aria-label="Käännä 3D-kortti"
+        aria-pressed="false"
+      >
+        <!-- Nämä ovat päällekkäin position:absolute-arvon ansiosta. -->
+        <span class="card-back flex">TAKA</span>
+        <span class="card-front flex">ETU</span>
+      </button>
+    </div>
+
+    <h2>3. CSS 3D: animoitu kuutio</h2>
+    <p>
+      Rakennetaan kuusi tahkoa. Kuution sivunpituus on 200px, joten tahkot
+      siirtyvät 100px originista eli 3D maailman keskuksesta.
+    </p>
+
+    <style>
+      /* ========================================================
+         DEMO 3: KUUTIO
+         ======================================================== */
+      .maailma3d {
+        width: 100%;
+        height: 320px;
+        border: 1px solid black;
+        margin: 50px auto;
+        display: grid;
+        place-items: center;
+      }
+
+      .kuutio {
+      }
+
+      @keyframes rotateCube {
+        0% {
+        }
+        100% {
+        }
+      }
+
+      .kuutio-tahko {
+      }
+
+      /* Muunnosten järjestys on tärkeä: rotate + translateZ. */
+      .kuutio-etu {
+      }
+      .kuutio-taka {
+      }
+      .kuutio-oikea {
+      }
+      .kuutio-vasen {
+      }
+      .kuutio-yla {
+      }
+      .kuutio-ala {
+      }
+    </style>
+
+    <!-- .maailma3d vastaa aiempaa .scene-elementtiä: kamera/perspektiivi. -->
+    <div class="maailma3d">
+      <!-- .kuutio on kaikkien tahkojen yhteinen 3D-vanhempi. -->
+      <div class="kuutio">
+        <!-- Kuusi päällekkäistä 200x200px tahkoa siirretään 3D-tilaan. -->
+        <div class="kuutio-tahko kuutio-etu">ETU</div>
+        <div class="kuutio-tahko kuutio-taka">TAKA</div>
+        <div class="kuutio-tahko kuutio-oikea">OIKEA</div>
+        <div class="kuutio-tahko kuutio-vasen">VASEN</div>
+        <div class="kuutio-tahko kuutio-yla">YLÄ</div>
+        <div class="kuutio-tahko kuutio-ala">ALA</div>
+      </div>
+    </div>
+
+    <h2>4. Sama kuutio Three.js:llä (WebGL)</h2>
+    <p>
+      CSS:ssä käänsimme HTML-elementtejä 3D-tilassa. Three.js:ssä luomme
+      3D-geometrian, kameran ja renderöimme näkymän canvas-elementtiin.
+    </p>
+
+    <style>
+      /* Three.js lisää tämän elementin sisään canvas-elementin. */
+      .webgl {
+        margin: 30px auto 70px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+      .webgl canvas {
+        display: block;
+      }
+
+      /* Lisähuomio: käyttäjä voi pyytää vähemmän animaatioita. */
+      @media (prefers-reduced-motion: reduce) {
+        .kuutio {
+          animation: none;
+          transform: rotateY(30deg) rotateX(25deg);
+        }
+        .card {
+          transition: none;
+        }
+      }
+    </style>
+
+    <div style="position: relative">
+      <div
+        class="webgl"
+        aria-label="Three.js:llä renderöity pyörivä kuutio"
+      ></div>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam tempora
+        magnam libero maxime repellendus. Voluptate doloremque similique,
+        perferendis tempora aspernatur animi molestias dolore aliquid delectus
+        non et eveniet explicabo repellendus. Cum architecto, sit aliquid
+        laboriosam laborum quasi cumque asperiores, dolore eveniet vero culpa
+        non consequatur ipsum temporibus tempore? Atque dolorum natus neque
+        repudiandae tempore voluptates quae, voluptatum consequatur totam
+        commodi! Error quam exercitationem accusamus iusto id eius,
+        reprehenderit rerum odio aperiam cupiditate itaque cumque facilis modi
+        veritatis quos nisi nam molestiae dolores placeat et dolorum. Aperiam
+        quia et quis ab! Lorem ipsum dolor sit amet, consectetur adipisicing
+        elit. Cupiditate ipsum veniam, suscipit sint quis at assumenda ea
+        molestiae earum.
+      </p>
+      <p>
+        Eos beatae a dolorem nemo, molestias in perspiciatis distinctio cumque
+        inventore. Error quam exercitationem accusamus iusto id eius,
+        reprehenderit rerum odio aperiam cupiditate itaque cumque facilis modi
+        veritatis quos nisi nam molestiae dolores placeat et dolorum. Aperiam
+        quia et quis ab! Lorem ipsum dolor sit amet, consectetur adipisicing
+        elit. Cupiditate ipsum veniam, suscipit sint quis at assumenda ea
+        molestiae earum. Eos beatae a dolorem nemo, molestias in perspiciatis
+        distinctio cumque inventore. Cupiditate ipsum veniam, suscipit sint quis
+        at assumenda ea molestiae earum. Eos beatae a dolorem nemo, molestias in
+        perspiciatis distinctio cumque inventore. Error quam exercitationem
+        accusamus iusto id eius, reprehenderit rerum odio aperiam cupiditate
+        itaque cumque facilis modi veritatis quos nisi nam molestiae dolores
+        placeat et dolorum. Aperiam quia et quis ab! Lorem ipsum dolor sit amet,
+        consectetur adipisicing elit. Cupiditate ipsum veniam, suscipit sint
+        quis at assumenda ea molestiae earum. Eos beatae a dolorem nemo,
+        molestias in perspiciatis distinctio cumque inventore.
+      </p>
+    </div>
+
+    <script>
+      // Kortin click-tapahtuma: JS vain vaihtaa CSS-luokan.
+      const card = document.querySelector(".card");
+    </script>
+  </body>
+</html>
