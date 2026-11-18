@@ -15,7 +15,23 @@
 
       .container {
         border: 1px solid rgb(4, 0, 255);
-        height: 50vh;
+        height: 500px;
+        display: grid;
+        /* grid-template-columns: 200px 200px 200px; */
+        /* grid-template-columns: 200px 1fr 1fr; */
+        grid-template-columns: [left] 200px [main-left] 1fr [main-right] 1fr [right];
+        /* grid-template-columns: 100px 100px 100px; */
+        grid-template-rows: 100px;
+        /* Automaattisesti luodit rivit */
+        grid-auto-rows: 100px;
+
+        /* Item tasolla */
+        /* align-items: center;
+        justify-items: center; */
+
+        /* Koko Gridi */
+        /* justify-content: center;
+        align-content: end; */
       }
       .item {
         border: 4px solid rgb(255, 90, 90);
@@ -25,16 +41,75 @@
         background-color: pink;
         text-align: center;
       }
+      /* .item5 {
+        align-self: end;
+      } */
+
+      .item1 {
+        background-color: blueviolet;
+        grid-column: 1 / -1;
+      }
+
+      .item5 {
+        background-color: aqua;
+        grid-column-start: 2;
+        grid-column-end: 4;
+        /* grid-column: 2 / 4; */
+        grid-row-start: 2;
+        grid-row-end: span 4;
+        /* grid-row: 1 / 2; */
+
+        /* grid-area: <name> | <row-start> / <column-start> / <row-end> / <column-end>; */
+      }
+
+      /* Special units */
       .container2 {
         border: 1px solid rgb(4, 0, 255);
+        display: grid;
+        grid-template-columns: min-content max-content auto 1fr;
       }
 
       .container3 {
         border: 1px solid rgb(4, 0, 255);
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
       }
 
       .container4 {
         border: 1px solid rgb(4, 0, 255);
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-rows: 100px 25vh 25vh 100px;
+        grid-template-areas:
+          "header header header header"
+          "aside main main main"
+          "aside main main main"
+          "❤️ ❤️ ❤️ ❤️";
+      }
+
+      @media screen and (max-width: 600px) {
+        .container4 {
+          grid-template-columns: 1fr;
+          grid-template-rows: 100px 100px 25vh 100px;
+          grid-template-areas:
+            "header"
+            "aside"
+            "main"
+            "❤️";
+        }
+      }
+
+      .header {
+        grid-area: header;
+      }
+      .aside {
+        grid-area: aside;
+      }
+      .main {
+        grid-area: main;
+      }
+      .footer {
+        grid-area: ❤️;
       }
     </style>
   </head>
@@ -42,11 +117,11 @@
   <body>
     <h2>Grid basics</h2>
     <div class="container">
-      <div class="item item1">1</div>
+      <div class="item item1">navi</div>
       <div class="item item2">2</div>
       <div class="item item3">3</div>
       <div class="item item4">4</div>
-      <div class="item item5">5</div>
+      <div class="item item5">main</div>
       <div class="item item6">6</div>
     </div>
 
@@ -66,15 +141,16 @@
       <div class="item">2</div>
       <div class="item">3</div>
       <div class="item">4</div>
+      <div class="item">5</div>
     </div>
 
     <h2>Grid area names</h2>
 
     <div class="container4">
-      <div class="item item_h">Header</div>
-      <div class="item item_n">Nav</div>
-      <div class="item item_m">Main</div>
-      <div class="item item_f">Footer</div>
+      <div class="item header">Header</div>
+      <div class="item aside">Aside</div>
+      <div class="item main">Main</div>
+      <div class="item footer">Footer</div>
     </div>
   </body>
 </html>

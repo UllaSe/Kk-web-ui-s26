@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .box {
+        width: 100px;
+        height: 100px;
+        background-color: aqua;
+        transition: transform 2s ease-in;
+      }
+      .box:hover {
+        transform: translateX(300px);
+      }
+      .box2 {
+        width: 100px;
+        height: 100px;
+        background-color: rgb(85, 255, 0);
+        animation-name: movebox;
+        animation-duration: 2s;
+        animation-fill-mode: forwards;
+        animation-iteration-count: 5;
+        animation-timing-function: ease-in;
+        animation-direction: reverse;
+      }
+
+      @keyframes movebox {
+        from {
+          background-color: rgb(85, 255, 0);
+          transform: translateX(0px);
+        }
+        to {
+          background-color: rgb(247, 0, 255);
+          transform: translateX(300px);
+        }
+      }
+
+      .box3 {
+        width: 100px;
+        height: 100px;
+        background-color: rgb(255, 208, 0);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- <div class="box">1</div> -->
+    <div class="box2">2</div>
+    <!-- <div class="box3">3</div> -->
+  </body>
+</html>

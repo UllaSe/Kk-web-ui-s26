@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Duck Hunt – CSS animations</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* 1. Sivun perusmuotoilu */
+      body {
+        min-height: 100vh;
+        font-family: "Press Start 2P", cursive;
+        line-height: 1.7;
+      }
+
+      main {
+        width: 800px;
+        margin: 0 auto;
+      }
+
+      .dh {
+        width: 200px;
+        padding: 10px;
+        clip-path: circle(50% at 50% 50%);
+        shape-outside: circle(50% at 50% 50%);
+        float: left;
+      }
+
+      /* 2. Pelialue: absolute-elementit sijoitetaan tämän sisään */
+      .stage {
+        position: relative;
+        width: 800px;
+        height: 481px;
+        background: url("img/stage.png") center / contain no-repeat;
+        overflow: hidden; /* Karkaava ankka ei näy alueen ulkopuolella */
+        cursor: crosshair;
+      }
+
+      #output {
+        margin-top: 40px;
+        padding-left: 30px;
+        font-family: monospace;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      /* 3. Koira: sprite-rivin leveys 600px, 5 ruutua -> 120px/ruutu */
+      .dog {
+        /* position: absolute;
+        bottom: 50px;
+        left: 10px;
+        width: calc(600px / 5); 
+        height: 110px;*/
+
+        position: absolute;
+        bottom: 50px;
+        left: 10px;
+        width: 120px;
+        height: 110px;
+        background: url("img/sprite.png") no-repeat 0 0;
+
+        /* Useampi CSS-animaatio toimii yhtä aikaa.
+           Viiveet määrittävät, milloin eri vaiheet alkavat. */
+        /* animation-name: movebox3;
+        animation-duration: 2s;
+        animation-timing-function: ease-in-out;
+        animation-delay: 1s;
+        animation-iteration-count: 3;
+        animation-direction: alternate;
+        animation-fill-mode: forwards; */
+
+        animation:
+          doggowalk 0.5s steps(5) 6,
+          doggomove 3s linear forwards,
+          doggosniff 0.5s 3s steps(2) 2,
+          /* Aloitetaan hypyn sprite-ruudut vasta 2. ruudusta.
+             Viimeinen eteenpäin katsova ruutu näkyy vasta hypyn lopussa. */
+          doggojumpframes 0.8s 4s steps(2) forwards,
+          doggohop 0.8s 4s ease-in-out forwards;
+      }
+
+      /* 4. Ankka: aluksi piilossa, kunnes koiran esitys loppuu */
+      .duck1 {
+        position: absolute;
+        top: 50px;
+        left: 10px;
+        width: 80px;
+        height: 80px;
+        background: url("img/sprite.png") no-repeat 0 -220px;
+        visibility: hidden;
+      }
+
+      /* Kaksi yhtäaikaista animaatiota:
+         siipien räpytys (steps) ja lentoreitti (linear). */
+      .duckfly {
+        visibility: visible;
+        animation:
+          duckfly1 600ms steps(3) infinite,
+          duckroute1 5s linear forwards;
+      }
+
+      .duckfall {
+        visibility: visible;
+        pointer-events: none; /* Putoavaa ankkaa ei voi ampua uudelleen */
+        animation: duckfall 2s ease-in forwards;
+      }
+
+      /* Tätä luokkaa voi testata selaimen konsolista. */
+      .paused {
+        animation-play-state: paused;
+      }
+
+      /* 5. Koiran animaatiot */
+      @keyframes doggowalk {
+        from {
+          background-position: 0 0;
+        }
+        to {
+          background-position: -600px 0;
+        }
+      }
+
+      @keyframes doggomove {
+        from {
+          left: 10px;
+        }
+        to {
+          left: 310px;
+        }
+      }
+
+      @keyframes doggosniff {
+        from {
+          background-position: -360px 0;
+        }
+        to {
+          background-position: -600px 0;
+        }
+      }
+
+      /* Hyppyruudut: toisen rivin ensimmäinen (sivuttain seisova)
+         ruutu ohitetaan. Käytetään ruutuja x=120, 240 ja lopuksi 360.
+         steps(2) näyttää liikkeen aikana ruudut x=120 ja x=240;
+         viimeinen ruutu saavutetaan animaation lopussa. */
+      @keyframes doggojumpframes {
+        from {
+          background-position: -120px -110px;
+        }
+        to {
+          background-position: -360px -110px;
+        }
+      }
+
+      /* Varsinainen hyppy – sulava kaari eikä portaittainen liike */
+      @keyframes doggohop {
+        0% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-100px);
+        }
+        100% {
+          transform: translateY(-50px);
+        }
+      }
+
+      /* 6. Ankan animaatiot */
+      @keyframes duckfly1 {
+        from {
+          background-position: 0 -220px;
+        }
+        to {
+          background-position: -240px -220px;
+        }
+      }
+
+      @keyframes duckroute1 {
+        0% {
+          left: 20px;
+          top: 100px;
+        }
+        25% {
+          left: 100px;
+          top: 300px;
+        }
+        50% {
+          left: 500px;
+          top: 100px;
+        }
+        75% {
+          left: 600px;
+          top: 200px;
+        }
+        100% {
+          left: 900px;
+          top: 100px;
+        }
+      }
+
+      @keyframes duckfall {
+        from {
+          transform: translateY(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateY(50px);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <h1>Duckhunt Stage</h1>
+
+      <p>
+        <img class="dh" src="img/duckhunt.png" alt="" />
+        Duck Hunt is a fantastic arcade game that takes inspiration from the
+        original classic available on Nintendo game systems. You must shoot the
+        moving ducks down with your mouse and see how many points you can score.
+        Be sure to avoid shooting your faithful dog!
+      </p>
+
+      <div class="stage">
+        <div class="dog"></div>
+        <div class="duck1"></div>
+      </div>
+
+      <h2>Animation events</h2>
+      <ul id="output"></ul>
+    </main>
+
+    <script>
+      const dog = document.querySelector(".dog");
+      const duck = document.querySelector(".duck1");
+      const stage = document.querySelector(".stage");
+      const output = document.querySelector("#output");
+
+      // 1. Apufunktio: lisätään viesti tapahtumalokiin.
+      function addLog(message) {
+        const li = document.createElement("li");
+        li.textContent = message;
+        output.prepend(li);
+      }
+
+      // 2. Seurataan koiran animaatioiden alkua, toistoja ja loppua.
+      const animationEvents = [
+        "animationstart",
+        "animationiteration",
+        "animationend",
+      ];
+
+      animationEvents.forEach((eventType) => {
+        dog.addEventListener(eventType, (event) => {
+          addLog(
+            `${event.animationName}: ${event.type} ` +
+              `(${event.elapsedTime.toFixed(1)} s)`,
+          );
+
+          // HUOM: animationend laukeaa jokaisesta päättyvästä animaatiosta.
+          // Käynnistetään ankka vasta koko hyppysarjan päätyttyä.
+          if (
+            event.type === "animationend" &&
+            event.animationName === "doggojumpframes"
+          ) {
+            dog.hidden = true;
+            duck.classList.add("duckfly");
+            addLog("Koira valmis - ankka lähtee lentoon!");
+          }
+        });
+      });
+
+      // 3. Osuma: jäädytetään ankan tämänhetkinen sijainti ennen
+      // lentämisluokan poistamista ja putoamisanimaation aloittamista.
+      duck.addEventListener("click", () => {
+        if (!duck.classList.contains("duckfly")) {
+          return;
+        }
+
+        // Ankka palaa alkuun joten on lisättävä
+        const duckRect = duck.getBoundingClientRect();
+        const stageRect = stage.getBoundingClientRect();
+
+        const left = duckRect.left - stageRect.left;
+        const top = duckRect.top - stageRect.top;
+
+        duck.style.left = `${left}px`;
+        duck.style.top = `${top}px`;
+
+        duck.classList.remove("duckfly");
+        duck.classList.add("duckfall");
+        addLog("Osuma! Ankka putoaa.");
+      });
+
+      // 4. Jos lentoreitti päättyy, ankka on karannut.
+      duck.addEventListener("animationend", (event) => {
+        if (event.animationName === "duckroute1") {
+          duck.classList.remove("duckfly");
+          addLog("Ankka pääsi karkuun!");
+        }
+      });
+
+      // Testaa konsolissa:
+      // duck.classList.add('paused');    // keskeytä
+      // duck.classList.remove('paused'); // jatka
+    </script>
+  </body>
+</html>
